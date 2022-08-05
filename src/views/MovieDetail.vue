@@ -1,19 +1,19 @@
 <template>
   <v-container>
     <v-row class="py-5">
-      <v-col xs="12" md="6">
+      <v-col xs="12" md="4">
         <div>
           <v-img
             :src="'https://image.tmdb.org/t/p/w400'+movie.poster_path"
-            width="600"
+            width="800"
             alt="poster"
-            aspect-ratio="1"
+            aspect-ratio="0.8"
             contain
           ></v-img>
         </div>
       </v-col>
 
-      <v-col xs="12" md="6" class="movie-info">
+      <v-col xs="12" md="8" class="movie-info">
         <h2 class="text-4xl mt-4 font-semibold">{{ movie.title }}</h2>
         <div>
           <span class="ml-1">
@@ -33,12 +33,13 @@
           
             <div>
               <h4 class="font-semibold">Featured Crew</h4>
-              <div class="flex mt-4" v-if="movie.credits">
-              <div class="mr-8" v-for="crew in movie.credits.crew.slice(0,4)" :key="crew.credit_id">
-                <div>{{ crew.name }}</div>
-                <div class="text-sm text-gray-600">{{ crew.job }}</div>
-              </div>
-            </div>
+              <v-row v-if="movie.credits" class="featured-crew">
+                <v-col v-for="crew in movie.credits.crew.slice(0,4)" :key="crew.credit_id">
+                  <div>{{ crew.name }}</div>
+                  <div class="text-sm job">{{ crew.job }}</div>
+                </v-col>
+              </v-row>
+
             <v-btn class="my-5" outlined color="primary" @click="back">back</v-btn>
           </div>
         </div>
@@ -49,13 +50,12 @@
 
     <v-row>
       <div class="movie-info--cast">
-        <h2 class="text-3xl font-semibold pt-3">Cast</h2>
+        <h2 class="text-3xl font-semibold pt-5">Cast</h2>
 
-        <div
-          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:grid-cols-5 gap-4"
+        <v-row
           v-if="movie.credits"
         >
-          <div class="mt-8" v-for="cast in movie.credits.cast.slice(0,5)" :key="cast.credit_id">
+          <v-col class="movie-cast mt-8" v-for="cast in movie.credits.cast.slice(0,5)" :key="cast.credit_id">
               <v-img
                 :src="'https://image.tmdb.org/t/p/w200' + cast.profile_path"
                 :alt="cast.name"
@@ -64,10 +64,10 @@
               <div class="text-lg mt-2">
                 {{ cast.name }}
               </div>
-              <div class="text-sm text-gray-600">{{ cast.character }}</div>
+              <div class="text-sm cast-character">{{ cast.character }}</div>
             </div>
-          </div>
-        </div>
+          </v-col>
+        </v-row>
       </div>
     </v-row>
   </v-container>
@@ -113,6 +113,16 @@ export default {
 
   &--overview {
     margin: 2rem 0;
+  }
+}
+.featured-crew {
+  .job {
+    color: #ccc;
+  }
+}
+.movie-cast {
+  .cast-character {
+    color: #ccc;
   }
 }
 </style>
